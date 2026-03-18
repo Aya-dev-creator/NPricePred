@@ -1,22 +1,95 @@
 # PricePred - Estimation de Prix d'Objets d'Occasion (FR/AR)
-## Plateforme d’Évaluation de Valeur de Revente Assistée par IA et Heuristiques
-
-<!-- Dernière mise à jour : 18 mars 2026 -->
-
-<div align="center">
 
 ![Badge PricePred](https://img.shields.io/badge/Statut-Déploiement_Immédiat-brightgreen?style=for-the-badge)
-<br>
-**Auteur : Aya-dev-creator**
 
----
+## Résumé
 
-### Résumé (Abstract)
+PricePred est une application web d’estimation de prix de revente d’objets d’occasion (voitures, téléphones, ordinateurs, montres, caméras, autres). L’application fonctionne en Français et en Arabe, et fournit :
 
-*PricePred est une application web d’estimation de valeur pour objets d’occasion (voitures, téléphones, ordinateurs, montres, caméras, etc.) orientée vers le marché marocain en MAD. L’outil combine un modèle de correction heuristique local et une option d’appel à un modèle LLM via Hugging Face pour les estimations les plus réalistes possibles.*
+- estimation heuristique locale basée sur âge/état/catégorie
+- option IA via Hugging Face `HF_API_KEY` (modèle Qwen)
+- interface légère Flask + HTML/CSS
+- thèmes clair/sombre
 
----
+## Objectif
 
+Permettre aux acheteurs/vendeurs de vérifier rapidement un prix estimé pour un objet d’occasion en dirhams marocains (MAD), avec une estimation cohérente et un retour clair sur l’état de l’objet.
+
+## Fonctionnalités
+
+- Formulaire de saisie : catégorie, marque, modèle, année, état
+- Bilingue FR/AR
+- Estimation IA + fallback heuristique
+- Routes de déploiement Vercel configurées
+- Assets inclus dans déploiement (`templates/`, `static/`)
+
+## Déploiement local
+
+1. Cloner le repo :
+
+```bash
+git clone https://github.com/Aya-dev-creator/NPricePred.git
+cd NPricePred
+```
+
+2. Créer un environnement virtuel :
+
+```bash
+python -m venv .venv
+.venv\Scripts\activate   # Windows
+# source .venv/bin/activate  # macOS/Linux
+pip install -r requirements.txt
+```
+
+3. Optionnel : définir `HF_API_KEY` :
+
+```bash
+set HF_API_KEY=your_token  # Windows
+# ou export HF_API_KEY=your_token  # macOS/Linux
+```
+
+4. Lancer le serveur :
+
+```bash
+python api/index.py
+```
+
+Visiter `http://127.0.0.1:5000`.
+
+## Déploiement Vercel
+
+`vercel.json` :
+
+```json
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/index.py",
+      "use": "@vercel/python",
+      "config": {"includeFiles": ["templates/**", "static/**"]}
+    }
+  ],
+  "routes": [{"src": "/(.*)", "dest": "/api/index.py"}]
+}
+```
+
+## Structure du projet
+
+```
+NPricePred/
+├── api/index.py
+├── templates/index.html
+├── static/styles.css
+├── requirements.txt
+├── vercel.json
+└── README.md
+```
+
+## Remarques
+
+- Ne pas versionner `HF_API_KEY` dans le dépôt.
+- L’approche heuristique fonctionne sans API externe.
 ## 🎯 Objectif du Projet
 
 Fournir une interface simple, bilingue (français/arabe) et réactive pour évaluer rapidement le prix de revente d’un objet sur la base de caractéristiques utilisateur : catégorie, marque, modèle, année, état.
